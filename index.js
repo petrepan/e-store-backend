@@ -1,7 +1,6 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const helmet = require("helmet");
 const productRoutes = require("./routes/product")
 const connectDB = require("./config/db")
 
@@ -16,7 +15,6 @@ app.use(express.urlencoded({ extended: true }));
 
 //THird-party Middleware
  
-app.use(helmet());
 app.use(cors());
 
 

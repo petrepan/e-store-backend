@@ -16,18 +16,18 @@ const getProducts = async (req, res) => {
         }
       : {};
 
-//sort products in ascending or descending order
+    //sort products in ascending or descending order
     const sortByAlphabet = () => {
-      let sortObj = {}
+      let sortObj = {};
       if (req.query.sort_by === "title-ascending") {
-         sortObj = { name: 1 };
+        sortObj = { name: 1 };
       } else if (req.query.sort_by === "title-descending") {
-         sortObj = {name: -1}
+        sortObj = { name: -1 };
       } else {
-         sortObj
+        sortObj;
       }
-      return sortObj
-    }
+      return sortObj;
+    };
 
     const sortByPrice = () => {
       let sortObj = {};
@@ -43,7 +43,8 @@ const getProducts = async (req, res) => {
 
     const count = await Product.countDocuments({ ...search });
     const products = await Product.find({ ...search })
-      .sort(sortByAlphabet()).sort(sortByPrice())
+      .sort(sortByAlphabet())
+      .sort(sortByPrice())
       .limit(pageSize)
       .skip(pageSize * (page - 1));
 
@@ -57,7 +58,7 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findOne({ name: req.params.name });
-
+ 
     if (product) {
       res.json(product);
     } else {
@@ -90,7 +91,6 @@ const createProduct = async (req, res) => {
     price,
     description,
     images,
-    brand,
     category,
     stock,
     optionType,
@@ -98,14 +98,11 @@ const createProduct = async (req, res) => {
   } = req.body;
   options = { [optionType]: optionName };
 
-  name.toUpperCase();
-
   if (
     !name ||
     !price ||
     !description ||
     !images ||
-    !brand ||
     !category ||
     !stock ||
     !options
@@ -115,7 +112,7 @@ const createProduct = async (req, res) => {
 
   if (isNaN(price)) {
     return res.status(404).json({ msg: "Price must be a number" });
-  } else if (price && Number(price) < 0) {
+  } else if (price && Number(price) < 1) {
     return res.status(404).json({ msg: "Price can't be less than 1" });
   }
 
@@ -126,12 +123,17 @@ const createProduct = async (req, res) => {
   }
 
   try {
+    name.toLowerCase();
+    const checkName = await Product.findOne({ name })
+    
+    if (checkName) {
+      return res.status(404).json({msg: "This Product exists already"})
+    }
     const product = new Product({
       name,
       price,
       description,
       images,
-      brand,
       category,
       stock,
       options,
@@ -154,7 +156,6 @@ const updateProduct = async (req, res) => {
     price,
     description,
     images,
-    brand,
     category,
     stock,
     optionType,
@@ -167,7 +168,6 @@ const updateProduct = async (req, res) => {
     price,
     description,
     images,
-    brand,
     category,
     stock,
     options,
@@ -178,6 +178,8 @@ const updateProduct = async (req, res) => {
     if (!currentProduct) {
       return res.status(404).join({ msg: "No product was found" });
     }
+
+    name.toLowerCase();
 
     const updateProduct = await Product.findOneAndUpdate(
       { _id: productId },

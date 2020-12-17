@@ -16,19 +16,10 @@ const productSchema = mongoose.Schema(
         required: true,
       },
     ],
-    options:  [
-      {
-        type: String,
-        required: true,
-      },
-    ],
-    brand: {
-      type: String,
-      required: true,
-    },
+    options: {},
     stock: {
       type: Number,
-      required: true,
+      required: true, 
     },
     price: {
       type: Number,
@@ -38,7 +29,7 @@ const productSchema = mongoose.Schema(
       {
         type: String,
       },
-    ],
+    ], 
   },
   { timestamps: true }
 );

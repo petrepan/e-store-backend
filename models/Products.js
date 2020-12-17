@@ -16,8 +16,12 @@ const productSchema = mongoose.Schema(
         required: true,
       },
     ],
-    options: {
-    },
+    options:  [
+      {
+        type: String,
+        required: true,
+      },
+    ],
     brand: {
       type: String,
       required: true,

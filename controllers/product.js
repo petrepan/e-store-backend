@@ -58,7 +58,7 @@ const getProducts = async (req, res) => {
 const getProductById = async (req, res) => {
   try {
     const product = await Product.findOne({ name: req.params.name });
-
+ 
     if (product) {
       res.json(product);
     } else {
@@ -107,32 +107,27 @@ const createProduct = async (req, res) => {
     !stock ||
     !options
   ) {
-    res.status(404);
-    throw new Error("All field are required");
+    return res.status(200).json({ msg: "All field are required" });
   }
 
   if (isNaN(price)) {
-    res.status(404);
-    throw new Error("Price must be a number");
+    return res.status(200).json({ msg: "Price must be a number" });
   } else if (price && Number(price) < 1) {
-    res.status(404);
-    throw new Error("Price can't be less than 1");
+    return res.status(200).json({ msg: "Price can't be less than 1" });
   }
 
   if (isNaN(stock)) {
-    res.status(404);
-    throw new Error("Stock must be a number");
+    return res.status(200).json({ msg: "Stock must be a number" });
   } else if (stock && Number(stock) < 0) {
-    res.status(404);
-    throw new Error("Stock can't be less than 1");
+    return res.status(200).json({ msg: "Stock can't be less than 1" });
   }
 
   try {
     name.toLowerCase();
-    const checkName = await Product.findOne({ name });
-
+    const checkName = await Product.findOne({ name })
+    
     if (checkName) {
-      return res.status(404).json({ msg: "This Product exists already" });
+      return res.status(404).json({msg: "This Product exists already"})
     }
     const product = new Product({
       name,
@@ -181,8 +176,7 @@ const updateProduct = async (req, res) => {
   try {
     const currentProduct = await Product.findById(productId);
     if (!currentProduct) {
-      res.status(404);
-      throw new Error("No product was found");
+      return res.status(200).json({ msg: "No product was found" });
     }
 
     name.toLowerCase();

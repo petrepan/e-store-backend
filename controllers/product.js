@@ -103,7 +103,7 @@ const createProduct = async (req, res) => {
     !price ||
     !description ||
     !images ||
-    !category ||
+    !category.length ||
     !stock ||
     !options
   ) {

@@ -127,7 +127,7 @@ const createProduct = async (req, res) => {
     const checkName = await Product.findOne({ name })
     
     if (checkName) {
-      return res.status(404).json({msg: "This Product exists already"})
+      return res.status(200).json({msg: "This Product name exists already"})
     }
     const product = new Product({
       name,

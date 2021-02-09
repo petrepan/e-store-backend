@@ -124,14 +124,14 @@ const createProduct = async (req, res) => {
   }
 
   try {
-    name.toLowerCase();
-    const checkName = await Product.findOne({ name });
+    let nameLower = name.toLowerCase();
+    const checkName = await Product.findOne({ name: nameLower });
 
     if (checkName) {
       return res.status(200).json({ msg: "This Product name exists already" });
     }
     const product = new Product({
-      name,
+      name: nameLower,
       price,
       description,
       images,

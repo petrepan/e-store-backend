@@ -1,5 +1,5 @@
 const Product = require("../models/Products");
-
+const { removeDashFromLinks } = require("../helpers/helpers");
 //fetch all products, fetch by query
 
 const getProducts = async (req, res) => {
@@ -56,9 +56,10 @@ const getProducts = async (req, res) => {
 
 // fetch single product
 const getProductByName = async (req, res) => {
+  const param = removeDashFromLinks(req.params.name);
   try {
-    const product = await Product.findOne({ name: req.params.name });
- 
+    const product = await Product.findOne({ name: param });
+
     if (product) {
       res.json(product);
     } else {
@@ -124,10 +125,10 @@ const createProduct = async (req, res) => {
 
   try {
     name.toLowerCase();
-    const checkName = await Product.findOne({ name })
-    
+    const checkName = await Product.findOne({ name });
+
     if (checkName) {
-      return res.status(200).json({msg: "This Product name exists already"})
+      return res.status(200).json({ msg: "This Product name exists already" });
     }
     const product = new Product({
       name,

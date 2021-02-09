@@ -55,7 +55,7 @@ const getProducts = async (req, res) => {
 };
 
 // fetch single product
-const getProductById = async (req, res) => {
+const getProductByName = async (req, res) => {
   try {
     const product = await Product.findOne({ name: req.params.name });
  
@@ -194,7 +194,7 @@ const updateProduct = async (req, res) => {
 
 module.exports = {
   getProducts,
-  getProductById,
+  getProductByName,
   deleteProduct,
   createProduct,
   updateProduct,

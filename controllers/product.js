@@ -4,7 +4,7 @@ const { removeDashFromLinks } = require("../helpers/helpers");
 
 const getProducts = async (req, res) => {
   try {
-    const pageSize = 10;
+    const pageSize = 8;
     const page = Number(req.query.pageNumber) || 1;
 
     const search = req.query.search
@@ -57,6 +57,7 @@ const getProducts = async (req, res) => {
 // fetch single product
 const getProductByName = async (req, res) => {
   const param = removeDashFromLinks(req.params.name);
+  console.log(param)
   try {
     const product = await Product.findOne({ name: param });
 
